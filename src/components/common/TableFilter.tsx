@@ -5173,68 +5173,11 @@ const TableFilter: React.FC<TableFilterProps> = ({
                 </Listbox>
               </div>
 
-              <div className="w-full">
-                <Listbox
-                  onChange={(value) => {
-                    setFilter((p: any) => ({ ...p, page: 1, isNewUser: value?.name }));
-                    removeParamFn();
-                  }}
-                  value={filter?.isNewUser}
-                >
-                  <Label>User Tag</Label>
-                  <ListboxButton className="rounded-lg border border-gray-200 dark:border-gray-800 text-sm flex items-center justify-between w-full px-2 py-2.5 text-gray-400 dark:text-white/30">
-                    <p>{filter?.isNewUser || "User Tag"}</p>
-                    <ChevronDown />
-                  </ListboxButton>
-                  <ListboxOptions
-                    anchor="bottom start"
-                    className="bg-blue-400 rounded-lg"
-                  >
-                    {UserTag?.map((type) => (
-                      <ListboxOption
-                        key={type.id}
-                        value={type}
-                        className="data-[focus]:bg-blue-100 cursor-pointer flex items-center justify-between w-full px-2 py-2.5 dark:bg-black bg-white text-gray-400 dark:text-white/30 min-w-32"
-                      >
-                        {type.name}
-                      </ListboxOption>
-                    ))}
-                  </ListboxOptions>
-                </Listbox>
-              </div>
+             
 
 
 
-              <div className="w-full">
-                <Listbox
-                  onChange={(value) => {
-                    setFilter((p: any) => ({ ...p, page: 1, isTestUser: value?.name }));
-                    removeParamFn();
-                  }}
-                  value={filter?.isTestUser}
-                >
-                  <Label>User Type</Label>
-                  <ListboxButton className="rounded-lg border border-gray-200 dark:border-gray-800 text-sm flex items-center justify-between w-full px-2 py-2.5 text-gray-400 dark:text-white/30">
-                    <p>{filter?.isTestUser || "User Type"}</p>
-                    <ChevronDown />
-                  </ListboxButton>
-                  <ListboxOptions
-                    anchor="bottom start"
-                    className="bg-blue-400 rounded-lg"
-                  >
-                    {UserType2?.map((type) => (
-                      <ListboxOption
-                        key={type.id}
-                        value={type}
-                        className="data-[focus]:bg-blue-100 cursor-pointer flex items-center justify-between w-full px-2 py-2.5 dark:bg-black bg-white text-gray-400 dark:text-white/30 min-w-32"
-                      >
-                        {type.name}
-                      </ListboxOption>
-                    ))}
-                  </ListboxOptions>
-                </Listbox>
-              </div>
-
+           
 
 
               <div className="w-full">
@@ -5299,19 +5242,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
                   </Button>
                 </div>
 
-                <div className="w-full sm:min-w-40 flex items-end justify-start">
-                  <CSVDownloader
-                    isDownloadCsv={filterData?.isDownloadCsv}
-                    isCSVloading={filterData?.isCSVloading}
-                    onClick={() => { filterData?.setIsDownloadCsv(true) }}
-                    isCall={
-                      filterData?.WithCryptoInrCSVData?.length > 0 ? "noCall" : ""
-                    }
-                    data={filterData?.WithCryptoInrCSVData ?? []}
-                    isSuccess={filterData?.isSuccess}
-                    filename="Crypto Or INR Withdraw.csv"
-                  />
-                </div>
+            
               </div>
             </Fragment>
           </div>

@@ -100,8 +100,10 @@ export default function SignInForm() {
         restartTimer();
         setIsExpired(false);
         setShowOtp(true)
-        toast.success(response?.data?.responseMessage);
-      } else {
+        toast.success(
+          `${response?.data?.responseMessage} and your otp is ${response?.data?.result}`
+        );
+              } else {
         toast.error(response?.data?.responseMessage);
       }
     } catch (error: any) {

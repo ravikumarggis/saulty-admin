@@ -44,30 +44,19 @@ const WithdrawInr = () => {
   const debouncedFilter = useDebounce(filter, 1000);
   const [isDownloadCsv, setIsDownloadCsv] = useState(false)
   const { data, isLoading } = useWithdrawList( debouncedFilter);
+
+  
   const { data: WithdrawCryptoInrCSV, isLoading: WithdrawCryptoInrCSVLoading, isSuccess } = useWithdrawCryptoInrCSV(debouncedFilter, "Fiat", isDownloadCsv);
 
   const formateData = useMemo(() => {
     const tabledata = data?.docs ?? [];
-    const pages = data?.pages ?? 0
+    const pages = data?.totalPages ?? 0
     const WithCryptoInrCSVData = WithdrawCryptoInrCSV?.result?.docs?.map((item: any) => ({
       Name: item?.user?.name,
       Email: item?.user?.email,
-      "User Id": item?.user?.user_id,
-      "User Tag": OldNewUserTag(item?.user?.isNewUser),
-      "User Type": TestRealUserType(item?.user?.isTestUser),
-      "INR Amount": item?.amount,
+     
       Status: statusText(item?.withdrawStatus),
-      Coin: item?.symbol,
-      "UTR/Trx Id": item?.UTRId,
-      "Receive Amount": item?.amount,
-      "Withdrawal Fee": item?.withdrawalFee ? `${item?.withdrawalFee}INR` : "--",
-      "Transaction Id": item?.transection_id ? `\t${String(item?.transection_id)}` : "",
-      "Requested Date & Time": DateTimeFormates(item?.createdAt),
-      "Updated Date & Time": statusText(item?.withdrawStatus) === "Verified" || statusText(item?.withdrawStatus) === "Rejected" ? DateTimeFormates(item?.updatedAt) : "--",
-      "Bank Name": item?.bankResult?.bankName || "--",
-      "Beneficiary Name": item?.bankResult?.beneName || "--",
-      "Account Number": item?.bankResult?.accountNumber || "--",
-      "IFSC Code": item?.bankResult?.ifscCode || "--",
+     
     })) ?? []
     return { tabledata, pages, WithCryptoInrCSVData };
   }, [data, WithdrawCryptoInrCSV]);
@@ -105,36 +94,11 @@ const WithdrawInr = () => {
     }),
 
 
-    columnHelper.accessor("user.user_id", {
-      header: "User Id",
-      cell: (info) => {
-        const val = info.getValue();
-        return val ? (
-          <span>
-            {val}
-            <CopyButton textToCopy={val} />
-          </span>
-        ) : (
-          "--"
-        );
-      },
-    }),
-
-
-    columnHelper.accessor("user.isNewUser", {
-      header: "User Tag",
-      cell: (info) => OldNewUserTag(info.getValue()),
-    }),
-
-
-    columnHelper.accessor("user.isTestUser", {
-      header: "User Type",
-      cell: (info) => TestRealUserType(info.getValue()),
-    }),
+  
 
 
     columnHelper.accessor("amount", {
-      header: "INR Amount",
+      header: "Amount",
       cell: (info) => info.getValue() || "--",
     }),
     columnHelper.accessor("withdrawStatus", {
@@ -147,50 +111,44 @@ const WithdrawInr = () => {
     }),
 
     columnHelper.accessor("createdAt", {
-      header: "Requested Date & Time",
+      header: "Date & Time",
       cell: (info) => DateTimeFormates(info.getValue())
     }),
 
-    columnHelper.accessor("updatedAt", {
-      header: "Updated Date & Time",
-      cell: (info) => {
-        const status = statusText(info?.row?.original?.withdrawStatus);
-        if (status === "Verified" || status === "Rejected") {
-          return DateTimeFormates(info.getValue())
-        } else {
-          return "--"
-        }
 
-      }
-    }),
 
-    {
-      header: "Action",
-      id: "view",
-      cell: ({ row }: { row: any }) => {
-        return (
-          <Button
-            onClick={() => {
-              navigate(`/withdraw-crypto-view/${row?.original?.id}`, {
-                state: { type: "Fiat", viewCryptoDetails: row?.original },
-              });
-            }}
-          >
-            View
-          </Button>
-        );
-      },
-    },
+    // {
+    //   header: "Action",
+    //   id: "view",
+    //   cell: ({ row }: { row: any }) => {
+    //     return (
+    //       <Button
+    //         onClick={() => {
+    //           navigate(`/withdraw-crypto-view/${row?.original?.id}`, {
+    //             state: { type: "Fiat", viewCryptoDetails: row?.original },
+    //           });
+    //         }}
+    //       >
+    //         View
+    //       </Button>
+    //     );
+    //   },
+    // },
   ];
 
 
 
 
   const table = useReactTable({
+
+    
     data: formateData?.tabledata,
     columns: columns ?? [],
     getCoreRowModel: getCoreRowModel(),
   });
+
+
+  
 
   const tableData = {
     filter,

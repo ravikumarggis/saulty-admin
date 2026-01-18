@@ -33,8 +33,10 @@ export const fetchWithdrawList = async ( filter: FilterType) => {
           filter?.filter === "Pending"
             ? "PENDING"
             : filter?.filter === "Verified"
-              ? "VERIFIED"
-              : filter?.filter,
+              ? "VERIFIED" 
+              : filter?.filter === "Rejected"
+              ? "REJECTED" 
+              :  filter?.filter,
         // depositStatus: filter?.filter || undefined,
         fromDate: filter?.fromDate
           ? convertDataFormateForServer(filter?.fromDate)

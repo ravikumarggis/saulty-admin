@@ -787,11 +787,11 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
                 alt="Logo"
               />
               <img
-                className="hidden dark:block w-60 h-10"
-                src="/images/logo/nowory-logodark.png"
+                className="hidden dark:block w-40 h-20"
+                src="/images/logo/onlylogo.png"
                 alt="Logo"
-                width={150}
-                height={40}
+                // width={150}
+                // height={40}
               />
             </>
           ) : (
