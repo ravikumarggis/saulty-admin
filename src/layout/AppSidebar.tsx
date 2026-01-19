@@ -66,7 +66,6 @@ const navItems: NavItem[] = [
   //   isWrite: false,
   // },
 
-
   // {
   //   icon: <MdManageAccounts />,
   //   name: "User Management",
@@ -171,7 +170,11 @@ const navItems: NavItem[] = [
       { name: "Activity Point", path: "/activity-point", pro: false },
       { name: "Holding Point", path: "/holding-point", pro: false },
       { name: "Point to INR Conversion", path: "/point-to-coin", pro: false },
-      { name: "Activity & Holding History", path: "/mining-history", pro: false, },
+      {
+        name: "Activity & Holding History",
+        path: "/mining-history",
+        pro: false,
+      },
       // {  name: "Min Coin Redeem Limit",  path: "/min-coin-redeemlimit",  pro: false},
     ],
     isRead: false,
@@ -209,9 +212,13 @@ const navItems: NavItem[] = [
       { name: "Signup Reward", path: "/referral-reward-list", pro: false },
       { name: "Coupon Reward", path: "/cupon-reward-list", pro: false },
       { name: "Referral Reward", path: "/camplainplan-list", pro: false },
-      { name: "Deposit Cashback Reward", path: "/deposit-cashback-reward", pro: false, },
-      { name: "HODL Reward", path: "/hodl-reward-list", pro: false, },
-      { name: "Redeem Reward", path: "/redeem-reward-list", pro: false, },
+      {
+        name: "Deposit Cashback Reward",
+        path: "/deposit-cashback-reward",
+        pro: false,
+      },
+      { name: "HODL Reward", path: "/hodl-reward-list", pro: false },
+      { name: "Redeem Reward", path: "/redeem-reward-list", pro: false },
       { name: "Trade Volume Booster", path: "/diwali-dhamaka", pro: false },
       // {  name: "Independence Day Reward", path: "/independenceday-reward-list", pro: false },
       // { name: "Deposit Crypto Reward", path: "/crypto-reward", pro: false,},
@@ -225,15 +232,17 @@ const navItems: NavItem[] = [
     icon: <BiSupport />,
     name: "Help And Support",
     subItems: [
-      { name: "Help and Support List", path: "/helpandsupport-list", pro: false, },
+      {
+        name: "Help and Support List",
+        path: "/helpandsupport-list",
+        pro: false,
+      },
       { name: "Tickets", path: "/ticket", pro: false },
-      { name: "Support Contact (Website)", path: "/support-contact-us" }
+      { name: "Support Contact (Website)", path: "/support-contact-us" },
     ],
     isRead: false,
     isWrite: false,
   },
-
-
 
   {
     icon: <MdOutlineNotificationsActive />,
@@ -271,11 +280,27 @@ const navItems: NavItem[] = [
     icon: <PiStepsDuotone />,
     name: "Nowory11 Management",
     subItems: [
-      { name: "Nowory11 Plan List", path: "/Installment-plan-list", pro: false, },
-      { name: "Nowory11 Subscriptions List", path: "/users-plan-list", pro: false, },
+      {
+        name: "Nowory11 Plan List",
+        path: "/Installment-plan-list",
+        pro: false,
+      },
+      {
+        name: "Nowory11 Subscriptions List",
+        path: "/users-plan-list",
+        pro: false,
+      },
       { name: "Deposit Nowory11", path: "/deposit-nowory11", pro: false },
-      { name: "Nowory11 User Subscription Limit", path: "/nowory11-invited-setting", pro: false },
-      { name: "Nowory11 Invited User List", path: "/invited-user-list", pro: false },
+      {
+        name: "Nowory11 User Subscription Limit",
+        path: "/nowory11-invited-setting",
+        pro: false,
+      },
+      {
+        name: "Nowory11 Invited User List",
+        path: "/invited-user-list",
+        pro: false,
+      },
       // { name: "Nowory11 Invited Code", path: "/nowory11-invited", pro: false },
     ],
     isRead: false,
@@ -474,7 +499,7 @@ const navItems: NavItem[] = [
   // },
 ];
 
-console.log(navItems,"navItemsnavItems");
+console.log(navItems, "navItemsnavItems");
 
 interface AppSidebarProps {
   searchModule: string;
@@ -641,20 +666,23 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
               // Submenu parent item
               <button
                 onClick={() => handleSubmenuToggle(index, menuType)}
-                className={`menu-item group ${openSubmenu?.type === menuType && openSubmenu?.index === index
-                  ? "menu-item-active"
-                  : "menu-item-inactive"
-                  } cursor-pointer ${!isExpanded && !isHovered
+                className={`menu-item group ${
+                  openSubmenu?.type === menuType && openSubmenu?.index === index
+                    ? "menu-item-active"
+                    : "menu-item-inactive"
+                } cursor-pointer ${
+                  !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "lg:justify-start"
-                  }`}
+                }`}
               >
                 <span
-                  className={`menu-item-icon-size ${openSubmenu?.type === menuType &&
+                  className={`menu-item-icon-size ${
+                    openSubmenu?.type === menuType &&
                     openSubmenu?.index === index
-                    ? "menu-item-icon-active"
-                    : "menu-item-icon-inactive"
-                    }`}
+                      ? "menu-item-icon-active"
+                      : "menu-item-icon-inactive"
+                  }`}
                 >
                   {nav.icon}
                 </span>
@@ -662,11 +690,12 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
                   <>
                     <span className="menu-item-text">{nav.name}</span>
                     <ChevronDownIcon
-                      className={`ml-auto w-5 h-5 transition-transform duration-200 ${openSubmenu?.type === menuType &&
+                      className={`ml-auto w-5 h-5 transition-transform duration-200 ${
+                        openSubmenu?.type === menuType &&
                         openSubmenu?.index === index
-                        ? "rotate-180 text-brand-500"
-                        : ""
-                        }`}
+                          ? "rotate-180 text-brand-500"
+                          : ""
+                      }`}
                     />
                   </>
                 )}
@@ -676,16 +705,18 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
               nav.path && (
                 <Link
                   to={nav.path || "#"}
-                  className={`menu-item group ${isActive(nav.path)
-                    ? "menu-item-active"
-                    : "menu-item-inactive"
-                    }`}
+                  className={`menu-item group ${
+                    isActive(nav.path)
+                      ? "menu-item-active"
+                      : "menu-item-inactive"
+                  }`}
                 >
                   <span
-                    className={`menu-item-icon-size ${isActive(nav.path)
-                      ? "menu-item-icon-active"
-                      : "menu-item-icon-inactive"
-                      }`}
+                    className={`menu-item-icon-size ${
+                      isActive(nav.path)
+                        ? "menu-item-icon-active"
+                        : "menu-item-icon-inactive"
+                    }`}
                   >
                     {nav.icon}
                   </span>
@@ -706,7 +737,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
                 style={{
                   height:
                     openSubmenu?.type === menuType &&
-                      openSubmenu?.index === index
+                    openSubmenu?.index === index
                       ? `${subMenuHeight[`${menuType}-${index}`]}px`
                       : "0px",
                 }}
@@ -719,29 +750,32 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
                         <li key={subItem.name}>
                           <Link
                             to={subItem.path}
-                            className={`menu-dropdown-item ${isActive(subItem.path)
-                              ? "menu-dropdown-item-active"
-                              : "menu-dropdown-item-inactive"
-                              }`}
+                            className={`menu-dropdown-item ${
+                              isActive(subItem.path)
+                                ? "menu-dropdown-item-active"
+                                : "menu-dropdown-item-inactive"
+                            }`}
                           >
                             {subItem.name}
                             <span className="flex items-center gap-1 ml-auto">
                               {subItem.new && (
                                 <span
-                                  className={`ml-auto ${isActive(subItem.path)
-                                    ? "menu-dropdown-badge-active"
-                                    : "menu-dropdown-badge-inactive"
-                                    } menu-dropdown-badge`}
+                                  className={`ml-auto ${
+                                    isActive(subItem.path)
+                                      ? "menu-dropdown-badge-active"
+                                      : "menu-dropdown-badge-inactive"
+                                  } menu-dropdown-badge`}
                                 >
                                   new
                                 </span>
                               )}
                               {subItem.pro && (
                                 <span
-                                  className={`ml-auto ${isActive(subItem.path)
-                                    ? "menu-dropdown-badge-active"
-                                    : "menu-dropdown-badge-inactive"
-                                    } menu-dropdown-badge`}
+                                  className={`ml-auto ${
+                                    isActive(subItem.path)
+                                      ? "menu-dropdown-badge-active"
+                                      : "menu-dropdown-badge-inactive"
+                                  } menu-dropdown-badge`}
                                 >
                                   pro
                                 </span>
@@ -763,9 +797,10 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
   return (
     <aside
       className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200
-        ${isExpanded || isMobileOpen
-          ? "w-[292px]"
-          : isHovered
+        ${
+          isExpanded || isMobileOpen
+            ? "w-[292px]"
+            : isHovered
             ? "w-[290px]"
             : "w-[90px]"
         }
@@ -775,10 +810,11 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-          }`}
+        className={`py-8 flex ${
+          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+        }`}
       >
-        <Link to="/withdraw-inr">
+        {/* <Link to="/withdraw-inr">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
@@ -802,17 +838,18 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
               height={32}
             />
           )}
-        </Link>
+        </Link> */}
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4 ">
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                  ? "lg:justify-center"
-                  : "justify-start"
-                  }`}
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
+                  !isExpanded && !isHovered
+                    ? "lg:justify-center"
+                    : "justify-start"
+                }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Menu"

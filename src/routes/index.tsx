@@ -1,4 +1,3 @@
-
 import { RouteObject } from "react-router";
 import AppLayout from "../layout/AppLayout";
 import SignIn from "../pages/AuthPages/SignIn";
@@ -11,8 +10,8 @@ const routes: RouteObject[] = [
     element: <AppLayout />,
     children: [
       { path: "/withdraw-inr", element: <WithdrawInr /> },
-    
-      { path: "/withdraw-crypto-view/:id", element: <WithDrawCryptoView /> },
+
+      { path: "/withdraw-view", element: <WithDrawCryptoView /> },
     ],
   },
   { path: "/", element: <SignIn /> },

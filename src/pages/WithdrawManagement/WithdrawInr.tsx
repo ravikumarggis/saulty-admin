@@ -9,9 +9,19 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { useEffect, useMemo, useState } from "react";
 import CommonTable from "../../components/common/CommonTable";
 import { useNavigate } from "react-router";
-import { useWithdrawCrypto, useWithdrawList } from "../../queries/deposit-management";
+import {
+  useWithdrawCrypto,
+  useWithdrawList,
+} from "../../queries/deposit-management";
 import BackComponent from "../../components/backcomponent/BackComponent";
-import { DateTimeFormates, OldNewUserTag, Pagination, statusColor, statusText, TestRealUserType } from "../../utils";
+import {
+  DateTimeFormates,
+  OldNewUserTag,
+  Pagination,
+  statusColor,
+  statusText,
+  TestRealUserType,
+} from "../../utils";
 import { useSetSearchParam } from "../../hooks/useSetSearchParam";
 import { useWithdrawCryptoInrCSV } from "../../queries/downloadCSV";
 import CopyButton from "../../components/common/CopyButton";
@@ -36,38 +46,37 @@ interface InrWithdrawListRowData {
 const columnHelper = createColumnHelper<InrWithdrawListRowData>();
 
 const WithdrawInr = () => {
-
-
   const navigate = useNavigate();
   const { setParam, searchParams, removeParam } = useSetSearchParam();
   const [filter, setFilter] = useState({ page: searchParams.get("page") });
   const debouncedFilter = useDebounce(filter, 1000);
-  const [isDownloadCsv, setIsDownloadCsv] = useState(false)
-  const { data, isLoading } = useWithdrawList( debouncedFilter);
+  const [isDownloadCsv, setIsDownloadCsv] = useState(false);
+  const { data, isLoading } = useWithdrawList(debouncedFilter);
 
-  
-  const { data: WithdrawCryptoInrCSV, isLoading: WithdrawCryptoInrCSVLoading, isSuccess } = useWithdrawCryptoInrCSV(debouncedFilter, "Fiat", isDownloadCsv);
+  const {
+    data: WithdrawCryptoInrCSV,
+    isLoading: WithdrawCryptoInrCSVLoading,
+    isSuccess,
+  } = useWithdrawCryptoInrCSV(debouncedFilter, "Fiat", isDownloadCsv);
 
   const formateData = useMemo(() => {
     const tabledata = data?.docs ?? [];
-    const pages = data?.totalPages ?? 0
-    const WithCryptoInrCSVData = WithdrawCryptoInrCSV?.result?.docs?.map((item: any) => ({
-      Name: item?.user?.name,
-      Email: item?.user?.email,
-     
-      Status: statusText(item?.withdrawStatus),
-     
-    })) ?? []
+    const pages = data?.totalPages ?? 0;
+    const WithCryptoInrCSVData =
+      WithdrawCryptoInrCSV?.result?.docs?.map((item: any) => ({
+        Name: item?.user?.name,
+        Email: item?.user?.email,
+
+        Status: statusText(item?.withdrawStatus),
+      })) ?? [];
     return { tabledata, pages, WithCryptoInrCSVData };
   }, [data, WithdrawCryptoInrCSV]);
 
-
   useEffect(() => {
     if (isSuccess && WithdrawCryptoInrCSV?.result?.docs?.length > 0) {
-      setIsDownloadCsv(false)
+      setIsDownloadCsv(false);
     }
-  }, [isSuccess, WithdrawCryptoInrCSV])
-
+  }, [isSuccess, WithdrawCryptoInrCSV]);
 
   const columns = [
     {
@@ -89,13 +98,16 @@ const WithdrawInr = () => {
       header: "Email",
       cell: (info) => {
         const val = info.getValue() || "--";
-        return val ? (<span>   {val}   <CopyButton textToCopy={val} /> </span>) : ("--");
+        return val ? (
+          <span>
+            {" "}
+            {val} <CopyButton textToCopy={val} />{" "}
+          </span>
+        ) : (
+          "--"
+        );
       },
     }),
-
-
-  
-
 
     columnHelper.accessor("amount", {
       header: "Amount",
@@ -105,50 +117,41 @@ const WithdrawInr = () => {
       header: "Status",
       cell: (info) => {
         let value = info.getValue() || "--";
-        return (<span className={`${statusColor(value)}`}>{statusText(value)}</span>
+        return (
+          <span className={`${statusColor(value)}`}>{statusText(value)}</span>
         );
       },
     }),
 
     columnHelper.accessor("createdAt", {
       header: "Date & Time",
-      cell: (info) => DateTimeFormates(info.getValue())
+      cell: (info) => DateTimeFormates(info.getValue()),
     }),
 
-
-
-    // {
-    //   header: "Action",
-    //   id: "view",
-    //   cell: ({ row }: { row: any }) => {
-    //     return (
-    //       <Button
-    //         onClick={() => {
-    //           navigate(`/withdraw-crypto-view/${row?.original?.id}`, {
-    //             state: { type: "Fiat", viewCryptoDetails: row?.original },
-    //           });
-    //         }}
-    //       >
-    //         View
-    //       </Button>
-    //     );
-    //   },
-    // },
+    {
+      header: "Action",
+      id: "view",
+      cell: ({ row }: { row: any }) => {
+        return (
+          <Button
+            onClick={() => {
+              navigate(`/withdraw-view`, {
+                state: { withdrawDetail: row?.original },
+              });
+            }}
+          >
+            View
+          </Button>
+        );
+      },
+    },
   ];
 
-
-
-
   const table = useReactTable({
-
-    
     data: formateData?.tabledata,
     columns: columns ?? [],
     getCoreRowModel: getCoreRowModel(),
   });
-
-
-  
 
   const tableData = {
     filter,
@@ -162,9 +165,7 @@ const WithdrawInr = () => {
       isCSVloading: WithdrawCryptoInrCSVLoading,
       setIsDownloadCsv: setIsDownloadCsv,
       isSuccess: isSuccess,
-      isDownloadCsv: isDownloadCsv
-
-
+      isDownloadCsv: isDownloadCsv,
     },
     removeParamFn: () => removeParam("page"),
     setSearchParamsFn: (page: number) => setParam("page", page),
