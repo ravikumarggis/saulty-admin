@@ -50,6 +50,8 @@ const TableFilter: React.FC<TableFilterProps> = ({
 
   return (
     <>
+       <div className="w-full mb-4 p-0 grid grid-cols-8 2xl:grid-cols-12 gap-4"></div>
+
       {type == "withdrawCrypto" && (
         <div className="w-full xl:w-[100%] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid 2xl:grid-cols-5 gap-x-3.5 gap-y-3.5 space-x-3 space-y-3 sm:space-y-0">
           <Fragment>
