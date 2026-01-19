@@ -10,10 +10,12 @@ const routes: RouteObject[] = [
   {
     element: <AppLayout />,
     children: [
+      { path: "/", element: <UserList /> },
       { path: "/withdraw-inr", element: <WithdrawInr /> },
 
       { path: "/withdraw-view", element: <WithDrawCryptoView /> },
       { path: "/user-list", element: <UserList /> },
+     
     ],
   },
   { path: "/", element: <SignIn /> },
