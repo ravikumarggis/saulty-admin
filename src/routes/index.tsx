@@ -4,6 +4,7 @@ import SignIn from "../pages/AuthPages/SignIn";
 import WithDrawCryptoView from "../pages/WithdrawManagement/ViewCrypto";
 import WithdrawInr from "../pages/WithdrawManagement/WithdrawInr";
 import NotFound from "../pages/OtherPage/NotFound";
+import UserList from "../pages/UserManagement/UserList";
 
 const routes: RouteObject[] = [
   {
@@ -12,6 +13,7 @@ const routes: RouteObject[] = [
       { path: "/withdraw-inr", element: <WithdrawInr /> },
 
       { path: "/withdraw-view", element: <WithDrawCryptoView /> },
+      { path: "/user-list", element: <UserList /> },
     ],
   },
   { path: "/", element: <SignIn /> },

@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Button from "../../components/ui/button/Button";
 import LoadingScreen from "../../components/common/LoadingScreen";
 import BackComponent from "../../components/backcomponent/BackComponent";
 import {
-  useApprovedRejectedInrWithdraw,
+  
   useApproveRejectCrptoWithdraw,
-  useViewWithdrawInrCrptoDetails,
 } from "../../queries/withdrawal-management";
 import {
   DateTimeFormates,
   DetailRow,
-  newSortAddress,
   statusColor,
   statusText,
 } from "../../utils";
@@ -19,130 +17,143 @@ import CopyButton from "../../components/common/CopyButton";
 import DynamicConfirmModal from "../../components/modal/DynamicConfirmModal";
 
 const WithDrawCryptoView: React.FC = () => {
+  const navigate = useNavigate(); 
   const location = useLocation();
-
   const { withdrawDetail } = location.state || {};
 
-  console.log(withdrawDetail, "withdrawDetailwithdrawDetail");
+  const isPending =
+    statusText(withdrawDetail?.withdrawStatus) === "Pending";
 
   const {
     mutate: ApproveRejectCryptoWithdrawal,
-    isPending: AprovedRejectedCryptoPending,
-    isSuccess: AprovedRejectedCryptoSuccess,
+    isPending: cryptoLoading,
+    isSuccess: cryptoSuccess,
   } = useApproveRejectCrptoWithdraw();
 
-  const {
-    mutate: ApproveRejectInrWithdrawal,
-    isPending: AprovedRejectedInrPending,
-    isSuccess: AprovedRejectedInrSuccess,
-  } = useApprovedRejectedInrWithdraw();
+  
 
-  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
-  const [showDeleteIcon] = useState(false);
-  const [TextMessage, setIsTextMessage] = useState<string>("");
-  const [VerifyOrRejected, setIsVerifyOrRejected] = useState<string>("");
-  const [showTextArea, setIsShowTextArea] = useState<boolean>(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [TextMessage, setIsTextMessage] = useState("");
+  const [VerifyOrRejected, setIsVerifyOrRejected] = useState("");
+  const [showTextArea, setIsShowTextArea] = useState(false);
+
+  const handleAccept = () => {
+    if (!withdrawDetail?._id) return;
+
+    ApproveRejectCryptoWithdrawal({
+      _id: withdrawDetail._id,
+      action: "VERIFIED",
+    });
+  };
+
+  const handleReject = () => {
+
+    console.log("uhuhhhhhuh");
+    
+    if (!withdrawDetail?._id) return;
+
+    ApproveRejectCryptoWithdrawal({
+      _id: withdrawDetail._id,
+      action: "REJECTED",
+      rejectionReason: TextMessage,
+    });
+  };
 
   useEffect(() => {
-    if (AprovedRejectedInrSuccess || AprovedRejectedCryptoSuccess) {
-      refetch();
+    if (cryptoSuccess) {
       setShowConfirmModal(false);
+      setIsTextMessage("");
+
+      navigate("/withdraw-inr"); // ✅ redirect
     }
-  }, [AprovedRejectedInrSuccess, AprovedRejectedCryptoSuccess]);
+  }, [cryptoSuccess, navigate]);
 
   return (
     <>
-      <BackComponent text={`Withdraw Details`} />
+      <BackComponent text="Withdraw Details" />
 
-      <div className="dark:text-white w-full flex flex-col xl:px-40 xl:flex-col justify-evenly mt-[5%]">
-        <div className="dark:text-white mb-8 border p-5 rounded-[8px]  border-gray-300 dark:border-gray-700 ">
+      <div className="w-full flex flex-col xl:px-40 mt-[5%]">
+        <div className="mb-8 border p-5 rounded border-gray-300 dark:border-gray-700">
           <div className="space-y-3">
-            <DetailRow
-              label="Amount"
-              value={` ₹${withdrawDetail?.amount}` || "--"}
-            />
-            <DetailRow
-              label="Name"
-              value={withdrawDetail?.user?.name || "--"}
-            />
-            <DetailRow
-              label="Email"
-              value={withdrawDetail?.user?.email || "--"}
-            />
+            <DetailRow label="Amount" value={`₹${withdrawDetail?.amount || "--"}`} />
+            <DetailRow label="Name" value={withdrawDetail?.user?.name || "--"} />
+            <DetailRow label="Email" value={withdrawDetail?.user?.email || "--"} />
 
-            <div className="flex justify-start items-center -mr-2">
-              <DetailRow
-                label="User Id"
-                value={withdrawDetail?.user?._id || "--"}
-              />
+            <div className="flex items-center">
+              <DetailRow label="User Id" value={withdrawDetail?.user?._id || "--"} />
               <CopyButton textToCopy={withdrawDetail?.user?._id} />
             </div>
 
             <DetailRow
               label="Date & Time"
-              value={
-                DateTimeFormates(withdrawDetail?.createdAt)
-
-                // moment(withdrawDetail?.createdAt)?.format("llll")
-              }
+              value={DateTimeFormates(withdrawDetail?.createdAt)}
             />
-            {/* {(statusText(withdrawDetail?.withdrawStatus) === "Rejected" ||
-              statusText(withdrawDetail?.withdrawStatus) === "Verified") && (
-              <DetailRow
-                label="Updated Date & Time"
-                value={
-                  DateTimeFormates(withdrawDetail?.updatedAt)
 
-                  // moment(withdrawDetail?.createdAt)?.format("llll")
-                }
-              />
-            )} */}
-
-            <div className="flex justify-start items-center -mr-2">
-              <DetailRow
-                label="Withdraw Id"
-                value={withdrawDetail?._id || "--"}
-              />
+            <div className="flex items-center">
+              <DetailRow label="Withdraw Id" value={withdrawDetail?._id || "--"} />
               <CopyButton textToCopy={withdrawDetail?._id} />
             </div>
 
-            <DetailRow
-              label="A/C Number"
-              value={withdrawDetail?.bank?.accountNumber || "--"}
-            />
-            <DetailRow
-              label="Bank Name"
-              value={withdrawDetail?.bank?.bankName || "--"}
-            />
-            <DetailRow
-              label="IFSC Code"
-              value={withdrawDetail?.bank?.ifscCode || "--"}
-            />
-            <DetailRow
-              label="Holder Name"
-              value={withdrawDetail?.bank?.holderName || "--"}
-            />
+            <DetailRow label="A/C Number" value={withdrawDetail?.bank?.accountNumber || "--"} />
+            <DetailRow label="Bank Name" value={withdrawDetail?.bank?.bankName || "--"} />
+            <DetailRow label="IFSC Code" value={withdrawDetail?.bank?.ifscCode || "--"} />
+            <DetailRow label="Holder Name" value={withdrawDetail?.bank?.holderName || "--"} />
 
             <DetailRow
-              color={statusColor(withdrawDetail?.withdrawStatus)}
               label="Status"
               value={statusText(withdrawDetail?.withdrawStatus)}
+              color={statusColor(withdrawDetail?.withdrawStatus)}
             />
 
-            {withdrawDetail?.message && (
+            {withdrawDetail?.rejectionReason && (
               <DetailRow
-                color={statusColor(withdrawDetail?.withdrawStatus)}
                 label="Reason"
-                value={withdrawDetail?.message || "--"}
+                value={withdrawDetail.rejectionReason}
+                color={statusColor(withdrawDetail?.withdrawStatus)}
               />
             )}
           </div>
         </div>
+
+        {/* ACTION BUTTONS */}
+        <div className="flex justify-end gap-4 pb-6">
+          <Button disabled={!isPending} onClick={handleAccept}>
+            Accept
+          </Button>
+
+          <Button
+            disabled={!isPending}
+            onClick={() => {
+              setIsVerifyOrRejected("REJECT");
+              setIsShowTextArea(true);
+              setShowConfirmModal(true);
+            }}
+          >
+            Reject
+          </Button>
+        </div>
       </div>
 
-      {(AprovedRejectedCryptoPending || AprovedRejectedInrPending) && (
-        <LoadingScreen />
-      )}
+      {(cryptoLoading ) && <LoadingScreen />}
+
+      <DynamicConfirmModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={()=>{
+          handleReject()
+        }}
+        message="Are you sure you want to reject this withdrawal?"
+        btnTextConfirm="Reject"
+        btnTextClose="Cancel"
+        showDeleteIcon={false}
+        lable="Reject Reason"
+        TextMessage={TextMessage}
+        setIsTextMessage={setIsTextMessage}
+        VerifyOrRejected={VerifyOrRejected}
+        placeholderText="Enter rejection reason"
+        errorText="Reason is required"
+        showTextArea={showTextArea}
+      />
     </>
   );
 };

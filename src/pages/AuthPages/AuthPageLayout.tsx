@@ -11,7 +11,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   if (isLoggedIn()) {
-    return <Navigate to={"/withdraw-inr"} />;
+    return <Navigate to={"/user-list"} />;
   }
   return (
     <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
@@ -21,7 +21,7 @@ export default function AuthLayout({
           <div className="relative flex items-center justify-center z-1">
             <GridShape />
             <div className="flex flex-col items-center max-w-xs">
-              <Link to="/withdraw-inr" className="block mb-4">
+              <Link to="/user-list" className="block mb-4">
                 <img
                   width={300}
                   height={80}

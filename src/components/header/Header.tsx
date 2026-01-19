@@ -78,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
             </svg>
           </button>
 
-          <Link to="/withdraw-inr" className="lg:hidden">
+          <Link to="/user-list" className="lg:hidden">
             <img
               className="dark:hidden"
               src="./images/logo/nowory-logolight.png"
