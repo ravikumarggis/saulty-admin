@@ -4,8 +4,8 @@ import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import UserDropdown from "../components/header/UserDropdown";
-import logolight from "../../src/assets/logo/nowory-logolight.png";
-import logodark from "../../src/assets/logo/nowory-logodark.png";
+import logolight from "../../public/images/logo/onlylogo.png";
+import logodark from "../../public/images/logo/onlylogo.png";
 
 
 interface AppHeaderProps {
@@ -94,12 +94,12 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           </button>
           <Link to="/" className="lg:hidden">
             <img
-              className="dark:hidden h-10"
+              className="dark:hidden h-20"
               src={logodark}
               alt="Logo"
             />
             <img
-              className="hidden dark:block h-10"
+              className="hidden dark:block h-20"
               src={logolight}
               alt="Logo"
             />
