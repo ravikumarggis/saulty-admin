@@ -166,7 +166,7 @@ export default function SignInForm() {
                 <div className="relative">
                   <Input
                     name="password"
-                    type="tel"
+                    
                     length={10}
                     placeholder="Enter password"
                     className="pr-[62px]"
