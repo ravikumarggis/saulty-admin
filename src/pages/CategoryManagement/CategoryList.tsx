@@ -128,23 +128,24 @@ const CategoryList = () => {
       },
     }),
 
-    // {
-    //   header: "Action",
-    //   id: "view",
-    //   cell: ({ row }: { row: any }) => {
-    //     return (
-    //       <Button
-    //         onClick={() => {
-    //           navigate(`/withdraw-view`, {
-    //             state: { withdrawDetail: row?.original },
-    //           });
-    //         }}
-    //       >
-    //         View
-    //       </Button>
-    //     );
-    //   },
-    // },
+    {
+      header: "Action",
+      id: "delete",
+      cell: ({ row }: { row: any }) => {
+        return (
+          <Button
+            className="bg-red-600"
+            onClick={() => {
+              navigate(`/withdraw-view`, {
+                state: { withdrawDetail: row?.original },
+              });
+            }}
+          >
+            Delete
+          </Button>
+        );
+      },
+    },
   ];
 
   const table = useReactTable({
