@@ -3,46 +3,47 @@ import { api } from "../services/apiServices";
 import { useQuery } from "@tanstack/react-query";
 import { convertDataFormateForServer, PayloadText } from "../utils";
 
-export const fetchUserKycList = async (filter: FilterType) => {
+
+type FilterType = {
+  search?: string;
+  filter?: string;
+  fromDate?: string;
+  toDate?: string;
+  page?: string | null;
+  symbol?: string;
+  isNewUser?: string;
+  isTestUser?: string;
+};
+
+
+
+
+export const fetchKycList = async ( filter: FilterType) => {
   try {
     const response = await api({
-      url: "/admin/kycList",
-      method: "POST",
-      data: {
-        isTestUser: filter?.isTestUser ? PayloadText.UserType(filter?.isTestUser) : undefined,
-        isNewUser: filter?.isNewUser ? PayloadText.UserTag(filter?.isNewUser) : undefined,
+      url: `/admin/kycList`,
+      method: "GET",
+      params: {
+      
+     
         search: filter?.search || undefined,
-        deviceType: filter?.deviceType || undefined,
-        fromDate:
-          (filter?.fromDate && convertDataFormateForServer(filter?.fromDate)) ||
-          undefined,
-        toDate:
-          (filter?.toDate && convertDataFormateForServer(filter?.toDate)) ||
-          undefined,
-        userType:
-          filter?.userType == "user"
-            ? 1
-            : filter?.userType == "admin"
-              ? 2
-              : filter?.userType == "sub_admin"
-                ? 3
-                : filter?.userType == "test_user"
-                  ? 4
-                  : undefined,
-        // kycStatus: filter?.kycStatus || undefined,
-        page: filter?.page || 1,
-
-
-        // filter:
-        //   filter?.ModuleType == "Pending"
-        //     ? "IN-PROCESS"
-        //     : filter?.ModuleType?.toLocaleUpperCase() || undefined,
-
-        filter:
-          filter?.kycStatus == "Pending"
-            ? "IN-PROCESS"
-            : filter?.kycStatus?.toLocaleUpperCase() || undefined,
+        kycStatus:
+          filter?.filter === "Pending"
+            ? "PENDING"
+            : filter?.filter === "Verified"
+              ? "VERIFIED" 
+              : filter?.filter === "Rejected"
+              ? "REJECTED" 
+              :  filter?.filter,
+        // depositStatus: filter?.filter || undefined,
+        fromDate: filter?.fromDate
+          ? convertDataFormateForServer(filter?.fromDate)
+          : undefined,
+        toDate: filter?.toDate
+          ? convertDataFormateForServer(filter?.toDate)
+          : undefined,
         limit: 10,
+        page: filter?.page || 1,
       },
     });
     return response;
@@ -51,20 +52,22 @@ export const fetchUserKycList = async (filter: FilterType) => {
     return error?.response;
   }
 };
-
-export const useUserKycDetails = (filter: FilterType) => {
+export const useKycList = ( filter: FilterType) => {
   return useQuery({
-    queryKey: ["userKycDetails", filter],
-    queryFn: () => fetchUserKycList(filter),
+    queryKey: ["kycList", filter],
+    queryFn: () => fetchKycList( filter),
     select(data) {
       if (data?.data?.responseCode === 200) {
         return data?.data?.result;
       } else {
-        return { docs: [] };
+        return null;
       }
     },
+   
   });
 };
+
+// useKycList
 
 export const fetchUserKycById = async (id: string) => {
   try {

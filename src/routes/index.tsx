@@ -7,6 +7,7 @@ import NotFound from "../pages/OtherPage/NotFound";
 import UserList from "../pages/UserManagement/UserList";
 import CategoryList from "../pages/CategoryManagement/CategoryList";
 import AddCategory from "../pages/CategoryManagement/AddCategory";
+import KycList from "../pages/KycManagement/KycList";
 
 const routes: RouteObject[] = [
   {
@@ -18,6 +19,7 @@ const routes: RouteObject[] = [
       { path: "/user-list", element: <UserList /> },
       { path: "/category-list", element: <CategoryList /> },
       { path: "/add-category", element: <AddCategory /> },
+      { path: "/kyc-list", element: <KycList /> },
     ],
   },
   { path: "/", element: <SignIn /> },

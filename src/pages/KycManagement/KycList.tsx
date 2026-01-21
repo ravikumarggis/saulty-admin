@@ -24,20 +24,21 @@ import {
 } from "../../utils";
 import { useSetSearchParam } from "../../hooks/useSetSearchParam";
 import { useWithdrawCryptoInrCSV } from "../../queries/downloadCSV";
-
-import { useCategoryList, useDeleteCategory } from "../../queries/category-mangement";
+import CopyButton from "../../components/common/CopyButton";
+import { useUserList } from "../../queries/user-management";
+import { useKycList } from "../../queries/kyc-management";
 
 interface InrWithdrawListRowData {
   id: string;
-
-  categoryTitle: string;
-  email: string;
-  categoryIcon: string;
-  isNewUser: boolean;
-  isTestUser: boolean;
-
-  mobileNumber: string;
-  status: string;
+  
+    name: number;
+    email: string;
+    user_id: string;
+    isNewUser: boolean;
+    isTestUser: boolean;
+  
+    mobileNumber: string;
+    status: string;
   createdAt: string;
   updatedAt: string;
   userType: string;
@@ -46,19 +47,16 @@ interface InrWithdrawListRowData {
 
 const columnHelper = createColumnHelper<InrWithdrawListRowData>();
 
-const CategoryList = () => {
+const KycList = () => {
   const navigate = useNavigate();
   const { setParam, searchParams, removeParam } = useSetSearchParam();
   const [filter, setFilter] = useState({ page: searchParams.get("page") });
   const debouncedFilter = useDebounce(filter, 1000);
   const [isDownloadCsv, setIsDownloadCsv] = useState(false);
-  const { data, isLoading ,refetch:refetchCategory} = useCategoryList();
+  const { data, isLoading } = useKycList(debouncedFilter);
 
- const {
-    mutate: deleteCategory,
-    isPending: deleteCategoryLoading,
-    isSuccess: deleteCategorySuccess,
-  } = useDeleteCategory();
+  console.log(data,"datadatadata");
+  
 
   const {
     data: WithdrawCryptoInrCSV,
@@ -67,7 +65,7 @@ const CategoryList = () => {
   } = useWithdrawCryptoInrCSV(debouncedFilter, "Fiat", isDownloadCsv);
 
   const formateData = useMemo(() => {
-    const tabledata = data ?? [];
+    const tabledata = data?.docs ?? [];
     const pages = data?.totalPages ?? 0;
     const WithCryptoInrCSVData =
       WithdrawCryptoInrCSV?.result?.docs?.map((item: any) => ({
@@ -79,24 +77,11 @@ const CategoryList = () => {
     return { tabledata, pages, WithCryptoInrCSVData };
   }, [data, WithdrawCryptoInrCSV]);
 
-  const handleDelete = (categoryTitle: string) => {
-    if (!categoryTitle) return;
-  
-    deleteCategory({ categoryTitle });
-  };
-  
   useEffect(() => {
     if (isSuccess && WithdrawCryptoInrCSV?.result?.docs?.length > 0) {
       setIsDownloadCsv(false);
     }
   }, [isSuccess, WithdrawCryptoInrCSV]);
-
-  useEffect(() => {
-    if (deleteCategorySuccess) {
-      refetchCategory();
-    }
-  }, [deleteCategorySuccess, refetchCategory]);
-  
 
   const columns = [
     {
@@ -106,35 +91,33 @@ const CategoryList = () => {
         return Pagination({ filter, table, row });
       },
     },
-    columnHelper.accessor("categoryTitle", {
-      header: "Category Title",
+    columnHelper.accessor("name", {
+      header: "Name",
       cell: (info) => info.getValue() || "--",
     }),
-    columnHelper.accessor("categoryIcon", {
-      header: "Icon",
-      cell: (info) => {
-        const iconUrl = info.getValue();
-
-        if (!iconUrl) return "--";
-
-        return (
-          <img
-            src={iconUrl}
-            alt="Category Icon"
-            className="h-10 w-10 object-contain rounded"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = "/placeholder.png";
-            }}
-          />
-        );
-      },
-    }),
-
     // columnHelper.accessor("user.email", {
     //   header: "Email",
     //   cell: (info) => info.getValue() || "--",
     // }),
+    columnHelper.accessor("email", {
+      header: "Email",
+      cell: (info) => {
+        const val = info.getValue() || "--";
+        return val ? (
+          <span>
+            {" "}
+            {val} <CopyButton textToCopy={val} />{" "}
+          </span>
+        ) : (
+          "--"
+        );
+      },
+    }),
 
+    columnHelper.accessor("mobileNumber", {
+      header: "Mobile No.",
+      cell: (info) => info.getValue() || "--",
+    }),
     columnHelper.accessor("status", {
       header: "Status",
       cell: (info) => {
@@ -145,23 +128,32 @@ const CategoryList = () => {
       },
     }),
 
-    {
-      header: "Action",
-      id: "delete",
-      cell: ({ row }: { row: any }) => {
-        const categoryTitle = row.original.categoryTitle;
-    
-        return (
-          <Button
-          className="bg-red-600 hover:bg-red-700"
-                      onClick={() => handleDelete(categoryTitle)}
-          >
-          {deleteCategoryLoading ? "Deleting..." : "Delete"}
-          </Button>
-        );
-      },
-    }
-    
+    columnHelper.accessor("userType", {
+      header: "User Type",
+      cell: (info) => info.getValue() || "--",
+    }),
+    columnHelper.accessor("createdAt", {
+      header: "Date & Time",
+      cell: (info) => DateTimeFormates(info.getValue()),
+    }),
+
+    // {
+    //   header: "Action",
+    //   id: "view",
+    //   cell: ({ row }: { row: any }) => {
+    //     return (
+    //       <Button
+    //         onClick={() => {
+    //           navigate(`/withdraw-view`, {
+    //             state: { withdrawDetail: row?.original },
+    //           });
+    //         }}
+    //       >
+    //         View
+    //       </Button>
+    //     );
+    //   },
+    // },
   ];
 
   const table = useReactTable({
@@ -175,8 +167,8 @@ const CategoryList = () => {
     setFilter,
     isLoading,
     table,
-    type: "CategoryList",
-    totalPage: 1,
+    type: "withdrawCrypto",
+    totalPage: formateData?.pages,
     filterData: {
       WithCryptoInrCSVData: formateData?.WithCryptoInrCSVData,
       isCSVloading: WithdrawCryptoInrCSVLoading,
@@ -190,10 +182,10 @@ const CategoryList = () => {
 
   return (
     <>
-      <BackComponent text="Category List" />
+      <BackComponent text="KYC List" />
       <CommonTable tableData={tableData} />
     </>
   );
 };
 
-export default CategoryList;
+export default KycList;

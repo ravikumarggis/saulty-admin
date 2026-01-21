@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 
 
 export const url: string = "https://api.thesoulty.com/api/v1"; // new staging;
+// export const url: string = "http://192.168.1.24:5013/api/v1"; // tigerrrrr;
 
 
 

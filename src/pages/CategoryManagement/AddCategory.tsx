@@ -13,16 +13,30 @@ import BackComponent from "../../components/backcomponent/BackComponent";
 import { api } from "../../services/apiServices";
 
 /* =========================
-   API CALL
+   API CALLS
 ========================= */
-const addCategory = (formData: FormData) => {
+
+// Upload image to Cloudinary
+const uploadImage = (formData: FormData) => {
   return api({
-    url: "/admin/addCategory", // 🔁 change if needed
+    url: "/user/uploadImage",
     method: "POST",
     data: formData,
     headers: {
       "Content-Type": "multipart/form-data",
     },
+  });
+};
+
+// Add category (image URL only)
+const addCategory = (data: {
+  categoryTitle: string;
+  categoryIcon: string;
+}) => {
+  return api({
+    url: "/admin/addCategory",
+    method: "POST",
+    data,
   });
 };
 
@@ -33,9 +47,29 @@ export default function AddCategory() {
   const navigate = useNavigate();
 
   /* =========================
-     MUTATION
+     IMAGE UPLOAD MUTATION
   ========================= */
-  const { mutate, isPending } = useMutation({
+  const uploadImageMutation = useMutation({
+    mutationFn: uploadImage,
+    onSuccess: (res) => {
+      const imageUrl = res?.data?.result;
+
+      if (imageUrl) {
+        formik.setFieldValue("icon", imageUrl);
+        toast.success("Image uploaded successfully");
+      } else {
+        toast.error("Invalid image response");
+      }
+    },
+    onError: () => {
+      toast.error("Image upload failed");
+    },
+  });
+
+  /* =========================
+     ADD CATEGORY MUTATION
+  ========================= */
+  const addCategoryMutation = useMutation({
     mutationFn: addCategory,
     onSuccess: (res) => {
       if (res?.data?.responseCode === 200) {
@@ -52,53 +86,32 @@ export default function AddCategory() {
     },
   });
 
-  /* =========================
-     FORMIK
-  ========================= */
+ 
   const formik = useFormik({
     initialValues: {
       title: "",
-      icon: null as File | null,
+      icon: "", 
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Category title is required"),
-      icon: Yup.mixed()
-        .required("Category icon is required")
-        .test(
-          "fileType",
-          "Only image files are allowed",
-          (value: any) =>
-            value &&
-            ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"].includes(
-              value.type
-            )
-        )
-        .test(
-          "fileSize",
-          "Image must be less than 1MB",
-          (value: any) => value && value.size <= 1024 * 1024
-        ),
+      icon: Yup.string().required("Category icon is required"),
     }),
     onSubmit: (values) => {
-      const formData = new FormData();
-      formData.append("categoryTitle", values.title);
-      if (values.icon) {
-        formData.append("categoryIcon", values.icon);
-      }
-      mutate(formData);
+      addCategoryMutation.mutate({
+        categoryTitle: values.title,
+        categoryIcon: values.icon,
+      });
     },
   });
 
-  /* =========================
-     UI
-  ========================= */
   return (
     <div className="h-full">
       <BackComponent text="Add Category" />
 
-      <div className="flex   h-full">
+      <div className="flex h-full">
         <div className="flex flex-col justify-center flex-1 w-full mt-[10%] max-w-md mx-auto">
           <form onSubmit={formik.handleSubmit} className="space-y-6">
+
             {/* =========================
                 CATEGORY TITLE
             ========================= */}
@@ -134,7 +147,23 @@ export default function AddCategory() {
                 accept="image/*"
                 onChange={(e) => {
                   const file = e.currentTarget.files?.[0];
-                  formik.setFieldValue("icon", file);
+                  if (!file) return;
+
+                  // Validate file manually
+                  if (!file.type.startsWith("image/")) {
+                    toast.error("Only image files are allowed");
+                    return;
+                  }
+
+                  if (file.size > 1024 * 1024) {
+                    toast.error("Image must be less than 1MB");
+                    return;
+                  }
+
+                  const formData = new FormData();
+                  formData.append("file", file);
+
+                  uploadImageMutation.mutate(formData);
                 }}
                 className="block w-full text-sm text-gray-500
                   file:mr-4 file:py-2 file:px-4
@@ -146,14 +175,14 @@ export default function AddCategory() {
 
               {formik.touched.icon && formik.errors.icon && (
                 <p className="text-sm text-error-500 mt-1">
-                  {formik.errors.icon as string}
+                  {formik.errors.icon}
                 </p>
               )}
 
               {/* IMAGE PREVIEW */}
               {formik.values.icon && (
                 <img
-                  src={URL.createObjectURL(formik.values.icon)}
+                  src={formik.values.icon}
                   alt="Preview"
                   className="mt-3 h-20 w-20 object-cover rounded-md border"
                 />
@@ -167,8 +196,14 @@ export default function AddCategory() {
               type="submit"
               className="w-full"
               size="sm"
-              startIcon={isPending && <NeonSpinner size="6" />}
-              disabled={isPending}
+              disabled={
+                uploadImageMutation.isPending ||
+                addCategoryMutation.isPending
+              }
+              startIcon={
+                (uploadImageMutation.isPending ||
+                  addCategoryMutation.isPending) && <NeonSpinner size="6" />
+              }
             >
               Add Category
             </Button>

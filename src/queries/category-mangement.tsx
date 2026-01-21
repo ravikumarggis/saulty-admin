@@ -1,5 +1,6 @@
+import toast from "react-hot-toast";
 import { api } from "../services/apiServices";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 type FilterType = {
   search?: string;
@@ -11,6 +12,12 @@ type FilterType = {
   isNewUser?: string;
   isTestUser?: string;
 };
+
+
+interface deleteCategoryPlayload {
+  categoryTitle: string;
+ 
+}
 
 /************************************** Crypto Desposite Request List  **********************************/
 
@@ -44,5 +51,35 @@ export const useCategoryList = () => {
         return null;
       }
     },
+  });
+};
+
+
+const handleDeleteCategory = async (
+  data: deleteCategoryPlayload
+) => {
+  try {
+    const response = await api({
+      url: "/admin/deleteCategory",
+      method: "DELETE",
+      data: data,
+    });
+    if (response?.data?.responseCode === 200) {
+      toast.success(response?.data?.responseMessage);
+      
+      return response?.data;
+    }
+  } catch (error: any) {
+    toast.error(error?.response?.data?.responseMessage);
+    return error?.response?.data;
+  }
+};
+
+export const useDeleteCategory = (
+  
+) => {
+  return useMutation({
+    mutationFn: (data: deleteCategoryPlayload) =>
+      handleDeleteCategory(data),
   });
 };
