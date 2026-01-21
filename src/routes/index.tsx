@@ -5,7 +5,7 @@ import WithDrawCryptoView from "../pages/WithdrawManagement/ViewCrypto";
 import WithdrawInr from "../pages/WithdrawManagement/WithdrawInr";
 import NotFound from "../pages/OtherPage/NotFound";
 import UserList from "../pages/UserManagement/UserList";
-import CategoryList from "../pages/CategoryManagement/categoryList";
+import CategoryList from "../pages/CategoryManagement/CategoryList";
 import AddCategory from "../pages/CategoryManagement/AddCategory";
 
 const routes: RouteObject[] = [
