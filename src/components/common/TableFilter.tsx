@@ -267,10 +267,10 @@ const TableFilter: React.FC<TableFilterProps> = ({
         </div>
       )}
       {type == "CategoryList" && (
-        <div className="w-full xl:w-[100%] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid 2xl:grid-cols-5 gap-x-3.5 gap-y-3.5 space-x-3 space-y-3 sm:space-y-0">
-          <div className="flex  justify-items-end  w-full bg-amber-50">
+        <div className="w-full ">
+          <div className="flex  justify-end items-end  ">
             <Button
-              className="w-full py-3"
+              className=" py-3"
               onClick={() => {
                 navigate("/add-category");
               }}
