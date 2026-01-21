@@ -17,14 +17,13 @@ const CommonTable = ({ tableData }: { tableData: any }) => {
     walletType,
     downloadCSV,
     text,
-    removeParamFn = () => { },
-    setSearchParamsFn = () => { },
+    removeParamFn = () => {},
+    setSearchParamsFn = () => {},
     filterData,
     setIsDownloadCsv,
   } = tableData;
 
-  console.log(table,"tabletable");
-  
+  console.log(table, "tabletable");
 
   const TablePagination = useMemo(() => {
     return (
@@ -83,19 +82,19 @@ const CommonTable = ({ tableData }: { tableData: any }) => {
         />
       )}
       <div
-        className={`relative flex flex-col w-full ${type && totalPage > 1 ? "h-auto" : "max-h-[70vh]"
+        className={`relative flex flex-col w-full ${
+          type && totalPage > 1 ? "h-auto" : "max-h-[70vh]"
           // type ? "h-[62vh]" : "h-[82vh]"
           // type ? "max-h-[62vh]" : "max-h-[65vh]"
-          } overflow-auto  dark:bg-black bg-white shadow-md rounded-xl border border-gray-300  dark:border-gray-700 bg-clip-border ${!type && "mt-10"
-          }`}
+        } overflow-auto  dark:bg-black bg-white shadow-md rounded-xl border border-gray-300  dark:border-gray-700 bg-clip-border ${
+          !type && "mt-10"
+        }`}
       >
         {totalPage !== 0 && (
           <table className="w-full text-left table-auto min-w-max z-0">
             <thead className="sticky top-0 dark:bg-black bg-white z-1">
               {table?.getHeaderGroups()?.map((headerGroup) => (
                 <tr key={headerGroup.id}>
-                  {console.log(headerGroup,"kkkkkkkk")
-                  }
                   {headerGroup?.headers?.map((header) => (
                     <th
                       className="p-4 border-b border-gray-300  dark:border-gray-700"
@@ -144,4 +143,3 @@ const CommonTable = ({ tableData }: { tableData: any }) => {
 };
 
 export default memo(CommonTable);
-

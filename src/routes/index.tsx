@@ -5,6 +5,8 @@ import WithDrawCryptoView from "../pages/WithdrawManagement/ViewCrypto";
 import WithdrawInr from "../pages/WithdrawManagement/WithdrawInr";
 import NotFound from "../pages/OtherPage/NotFound";
 import UserList from "../pages/UserManagement/UserList";
+import CategoryList from "../pages/CategoryManagement/categoryList";
+import AddCategory from "../pages/CategoryManagement/AddCategory";
 
 const routes: RouteObject[] = [
   {
@@ -14,7 +16,8 @@ const routes: RouteObject[] = [
 
       { path: "/withdraw-view", element: <WithDrawCryptoView /> },
       { path: "/user-list", element: <UserList /> },
-     
+      { path: "/category-list", element: <CategoryList /> },
+      { path: "/add-category", element: <AddCategory /> },
     ],
   },
   { path: "/", element: <SignIn /> },

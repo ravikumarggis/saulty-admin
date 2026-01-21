@@ -94,7 +94,7 @@ const navItems: NavItem[] = [
   //   isWrite: true,
   // },
   {
-    icon: <PiHandWithdrawBold />,
+    icon: <FaUserAstronaut />,
     name: "User Management",
     path: "/user-list",
     isRead: true,
@@ -107,11 +107,13 @@ const navItems: NavItem[] = [
     isRead: true,
     isWrite: true,
   },
-
- 
-
-
-
+  {
+    icon: <MdManageAccounts />,
+    name: "Category Management",
+    path: "/category-list",
+    isRead: true,
+    isWrite: true,
+  },
 ];
 
 console.log(navItems, "navItemsnavItems");
@@ -429,7 +431,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
         }`}
       >
-         <Link to="/user-list">
+        {/* <Link to="/user-list">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
@@ -453,7 +455,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
               height={32}
             />
           )}
-        </Link> 
+        </Link>  */}
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">

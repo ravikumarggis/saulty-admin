@@ -9,6 +9,7 @@ import DatePicker from "../form/date-picker";
 import Button from "../ui/button/Button";
 import { Fragment, memo, useState } from "react";
 import Label from "../form/Label";
+import { useNavigate } from "react-router";
 
 const status = [
   { id: 1, name: "Verified" },
@@ -19,7 +20,6 @@ const userType = [
   { id: 1, name: "User" },
   { id: 2, name: "Buddy" },
   { id: 2, name: "Admin" },
-  
 ];
 
 interface TableFilterProps {
@@ -43,6 +43,8 @@ const TableFilter: React.FC<TableFilterProps> = ({
 }) => {
   const [datePickerKey, setDatePickerKey] = useState(0);
 
+  const navigate = useNavigate();
+
   const parseDate = (str: string) => {
     const [day, month, year] = str.split("/");
     return new Date(`${year}-${month}-${day}`);
@@ -50,7 +52,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
 
   return (
     <>
-       <div className="w-full mb-4 p-0 grid grid-cols-8 2xl:grid-cols-12 gap-4"></div>
+      <div className="w-full mb-4 p-0 grid grid-cols-8 2xl:grid-cols-12 gap-4"></div>
 
       {type == "withdrawCrypto" && (
         <div className="w-full xl:w-[100%] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid 2xl:grid-cols-5 gap-x-3.5 gap-y-3.5 space-x-3 space-y-3 sm:space-y-0">
@@ -247,8 +249,6 @@ const TableFilter: React.FC<TableFilterProps> = ({
               </Listbox>
             </div>
 
-           
-
             <div className=" w-full flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-3">
               <div className="w-full sm:min-w-40 flex items-end mt-4">
                 <Button
@@ -266,7 +266,21 @@ const TableFilter: React.FC<TableFilterProps> = ({
           </Fragment>
         </div>
       )}
-       <div className="w-full mb-4 p-0 grid grid-cols-8 2xl:grid-cols-12 gap-4"></div>
+      {type == "CategoryList" && (
+        <div className="w-full xl:w-[100%] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid 2xl:grid-cols-5 gap-x-3.5 gap-y-3.5 space-x-3 space-y-3 sm:space-y-0">
+          <div className="flex  justify-items-end  w-full bg-amber-50">
+            <Button
+              className="w-full py-3"
+              onClick={() => {
+                navigate("/add-category");
+              }}
+            >
+              Add Cetegory
+            </Button>
+          </div>
+        </div>
+      )}
+      <div className="w-full mb-4 p-0 grid grid-cols-8 2xl:grid-cols-12 gap-4"></div>
     </>
   );
 };
