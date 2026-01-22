@@ -34,7 +34,7 @@ interface InrWithdrawListRowData {
   aadhaarNumber: string;
   panNumber: string;
   city: string;
-  isNewUser: boolean;
+  name: string;
   isTestUser: boolean;
 
   kycStatus: string;
@@ -88,33 +88,55 @@ const KycList = () => {
         return Pagination({ filter, table, row });
       },
     },
-    columnHelper.accessor("aadhaarNumber", {
-      header: "Aadhaar Number",
-      cell: (info) => info.getValue() || "--",
-    }),
-    // columnHelper.accessor("user.email", {
-    //   header: "Email",
+   
+    columnHelper.accessor(
+        (row) => row?.userId?.name,
+        {
+          id: "name",
+          header: "Name",
+          cell: (info) => info.getValue() || "--",
+        }
+      ),
+    columnHelper.accessor(
+        (row) => row?.userId?.mobileNumber,
+        {
+          id: "mobile",
+          header: "Mobile No",
+          cell: (info) => info.getValue() || "--",
+        }
+      ),
+    columnHelper.accessor(
+        (row) => row?.userId?.email,
+        {
+          id: "email",
+          header: "Email",
+          cell: (info) => info.getValue() || "--",
+        }
+      ),
+      columnHelper.accessor("aadhaarNumber", {
+        header: "Aadhaar Number",
+        cell: (info) => info.getValue() || "--",
+      }),
+ 
+    // columnHelper.accessor("panNumber", {
+    //   header: "Pan No.",
+    //   cell: (info) => {
+    //     const val = info.getValue() || "--";
+    //     return val ? (
+    //       <span>
+    //         {" "}
+    //         {val} <CopyButton textToCopy={val} />{" "}
+    //       </span>
+    //     ) : (
+    //       "--"
+    //     );
+    //   },
+    // }),
+
+    // columnHelper.accessor("city", {
+    //   header: "City",
     //   cell: (info) => info.getValue() || "--",
     // }),
-    columnHelper.accessor("panNumber", {
-      header: "Pan No.",
-      cell: (info) => {
-        const val = info.getValue() || "--";
-        return val ? (
-          <span>
-            {" "}
-            {val} <CopyButton textToCopy={val} />{" "}
-          </span>
-        ) : (
-          "--"
-        );
-      },
-    }),
-
-    columnHelper.accessor("city", {
-      header: "City",
-      cell: (info) => info.getValue() || "--",
-    }),
 
     columnHelper.accessor("createdAt", {
       header: "Date & Time",

@@ -18,7 +18,7 @@ const KycView: React.FC = () => {
   const location = useLocation();
   const { kycDetail } = location.state || {};
 
-  const isPending = statusText(kycDetail?.withdrawStatus) === "Pending";
+  const isPending = statusText(kycDetail?.kycStatus) === "Pending";
 
   const {
     mutate: ApproveRejectKyc,
@@ -57,7 +57,7 @@ const KycView: React.FC = () => {
     if (cryptoSuccess) {
       setShowConfirmModal(false);
       setIsTextMessage("");
-      navigate("/withdraw-inr");
+      navigate("/kyc-list");
     }
   }, [cryptoSuccess, navigate]);
 
@@ -67,9 +67,22 @@ const KycView: React.FC = () => {
 
       <div className="w-full flex flex-col xl:px-40 mt-[5%]">
         <div className="mb-8 border p-5 rounded border-gray-300 dark:border-gray-700">
-          <h3 className="text-lg font-semibold mb-4 text-white">KYC Details</h3>
+          <h3 className="text-lg font-semibold mb-4 dark:text-white">KYC Details</h3>
 
           <div className="space-y-3">
+           
+            <DetailRow
+              label="Name"
+              value={kycDetail?.userId?.name || "--"}
+            />
+            <DetailRow
+              label="Email"
+              value={kycDetail?.userId?.email || "--"}
+            />
+             <DetailRow
+              label="Mobile Number"
+              value={kycDetail?.userId?.mobileNumber || "--"}
+            />
             <DetailRow
               label="PAN Number"
               value={kycDetail?.panNumber || "--"}
@@ -88,12 +101,19 @@ const KycView: React.FC = () => {
               value={statusText(kycDetail?.kycStatus)}
               color={statusColor(kycDetail?.kycStatus)}
             />
+                {kycDetail?.rejectionReason && (
+                          <DetailRow
+                            label="Reason"
+                            value={kycDetail.rejectionReason}
+                            color={statusColor(kycDetail?.kycStatus)}
+                          />
+                        )}
           </div>
 
           {/* DOCUMENT IMAGES */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
             <div>
-              <p className="text-sm mb-1 text-white">PAN Card</p>
+              <p className="text-sm mb-1 dark:text-white">PAN Card</p>
               <img
                 src={kycDetail?.panFrontUrl}
                 alt="PAN"
@@ -103,7 +123,7 @@ const KycView: React.FC = () => {
             </div>
 
             <div>
-              <p className="text-sm mb-1 text-white">Aadhaar Front</p>
+              <p className="text-sm mb-1 dark:text-white">Aadhaar Front</p>
               <img
                 src={kycDetail?.aadhaarFrontUrl}
                 alt="Aadhaar Front"
@@ -113,7 +133,7 @@ const KycView: React.FC = () => {
             </div>
 
             <div>
-              <p className="text-sm mb-1 text-white">Aadhaar Back</p>
+              <p className="text-sm mb-1 dark:text-white">Aadhaar Back</p>
               <img
                 src={kycDetail?.aadhaarBackUrl}
                 alt="Aadhaar Back"

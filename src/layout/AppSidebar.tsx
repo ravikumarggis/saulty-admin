@@ -438,7 +438,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
         }`}
       >
-        {/* <Link to="/user-list">
+       <Link to="/user-list">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
@@ -462,7 +462,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ searchModule }) => {
               height={32}
             />
           )}
-        </Link>  */}
+        </Link>  
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">

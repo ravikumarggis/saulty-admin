@@ -70,7 +70,7 @@ export const useKycList = (filter: FilterType) => {
 
 // useKycList
 
-const handleApproveRejectCrptoWithdraw = async (
+const handleApproveRejectKyc = async (
   data: VerifiedOrRejectedKycPlayload
 ) => {
   try {
@@ -93,6 +93,6 @@ const handleApproveRejectCrptoWithdraw = async (
 export const useApproveRejectKyc = () => {
   return useMutation({
     mutationFn: (data: VerifiedOrRejectedKycPlayload) =>
-      handleApproveRejectCrptoWithdraw(data),
+      handleApproveRejectKyc(data),
   });
 };
