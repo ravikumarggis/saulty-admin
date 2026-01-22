@@ -30,15 +30,15 @@ import { useKycList } from "../../queries/kyc-management";
 
 interface InrWithdrawListRowData {
   id: string;
-  
-    name: number;
-    email: string;
-    user_id: string;
-    isNewUser: boolean;
-    isTestUser: boolean;
-  
-    mobileNumber: string;
-    status: string;
+
+  aadhaarNumber: string;
+  panNumber: string;
+  city: string;
+  isNewUser: boolean;
+  isTestUser: boolean;
+
+  kycStatus: string;
+  status: string;
   createdAt: string;
   updatedAt: string;
   userType: string;
@@ -54,9 +54,6 @@ const KycList = () => {
   const debouncedFilter = useDebounce(filter, 1000);
   const [isDownloadCsv, setIsDownloadCsv] = useState(false);
   const { data, isLoading } = useKycList(debouncedFilter);
-
-  console.log(data,"datadatadata");
-  
 
   const {
     data: WithdrawCryptoInrCSV,
@@ -91,16 +88,16 @@ const KycList = () => {
         return Pagination({ filter, table, row });
       },
     },
-    columnHelper.accessor("name", {
-      header: "Name",
+    columnHelper.accessor("aadhaarNumber", {
+      header: "Aadhaar Number",
       cell: (info) => info.getValue() || "--",
     }),
     // columnHelper.accessor("user.email", {
     //   header: "Email",
     //   cell: (info) => info.getValue() || "--",
     // }),
-    columnHelper.accessor("email", {
-      header: "Email",
+    columnHelper.accessor("panNumber", {
+      header: "Pan No.",
       cell: (info) => {
         const val = info.getValue() || "--";
         return val ? (
@@ -114,11 +111,17 @@ const KycList = () => {
       },
     }),
 
-    columnHelper.accessor("mobileNumber", {
-      header: "Mobile No.",
+    columnHelper.accessor("city", {
+      header: "City",
       cell: (info) => info.getValue() || "--",
     }),
-    columnHelper.accessor("status", {
+
+    columnHelper.accessor("createdAt", {
+      header: "Date & Time",
+      cell: (info) => DateTimeFormates(info.getValue()),
+    }),
+
+    columnHelper.accessor("kycStatus", {
       header: "Status",
       cell: (info) => {
         let value = info.getValue() || "--";
@@ -128,32 +131,23 @@ const KycList = () => {
       },
     }),
 
-    columnHelper.accessor("userType", {
-      header: "User Type",
-      cell: (info) => info.getValue() || "--",
-    }),
-    columnHelper.accessor("createdAt", {
-      header: "Date & Time",
-      cell: (info) => DateTimeFormates(info.getValue()),
-    }),
-
-    // {
-    //   header: "Action",
-    //   id: "view",
-    //   cell: ({ row }: { row: any }) => {
-    //     return (
-    //       <Button
-    //         onClick={() => {
-    //           navigate(`/withdraw-view`, {
-    //             state: { withdrawDetail: row?.original },
-    //           });
-    //         }}
-    //       >
-    //         View
-    //       </Button>
-    //     );
-    //   },
-    // },
+    {
+      header: "Action",
+      id: "view",
+      cell: ({ row }: { row: any }) => {
+        return (
+          <Button
+            onClick={() => {
+              navigate(`/kyc-view`, {
+                state: { kycDetail: row?.original },
+              });
+            }}
+          >
+            View
+          </Button>
+        );
+      },
+    },
   ];
 
   const table = useReactTable({

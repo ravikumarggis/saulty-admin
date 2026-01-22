@@ -2,7 +2,6 @@ import toast from "react-hot-toast";
 import { api } from "../services/apiServices";
 import { useMutation } from "@tanstack/react-query";
 
-
 interface VerifiedOrRejectedCryptoInrwithdrawlPlayload {
   id: number;
   action: string;
@@ -10,7 +9,6 @@ interface VerifiedOrRejectedCryptoInrwithdrawlPlayload {
   transactionId?: string;
   modeType?: string;
 }
-
 
 const handleApproveRejectCrptoWithdraw = async (
   data: VerifiedOrRejectedCryptoInrwithdrawlPlayload
@@ -23,7 +21,7 @@ const handleApproveRejectCrptoWithdraw = async (
     });
     if (response?.data?.responseCode === 200) {
       toast.success(response?.data?.responseMessage);
-      
+
       return response?.data;
     }
   } catch (error: any) {
@@ -32,12 +30,9 @@ const handleApproveRejectCrptoWithdraw = async (
   }
 };
 
-export const useApproveRejectCrptoWithdraw = (
-  
-) => {
+export const useApproveRejectCrptoWithdraw = () => {
   return useMutation({
     mutationFn: (data: VerifiedOrRejectedCryptoInrwithdrawlPlayload) =>
       handleApproveRejectCrptoWithdraw(data),
   });
 };
-
