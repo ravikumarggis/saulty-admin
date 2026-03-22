@@ -12,6 +12,12 @@ import KycView from "../pages/KycManagement/ViewKyc";
 import ContentMangement from "../pages/SataticContentMangment/ContentMangement";
 import ViewStaticContent from "../pages/SataticContentMangment/ViewStaticContent";
 import EditStaticContent from "../pages/SataticContentMangment/EditStaticContent";
+import DepositList from "../pages/DepositManagement";
+import DepositView from "../pages/DepositManagement/ViewDeposit";
+import FeeStructure from "../pages/FeeStructure";
+import SendNotification from "../pages/Notification/SendNotification";
+import NotificationList from "../pages/Notification/NotificationList";
+import NotificationView from "../pages/Notification/NotificationView";
 
 const routes: RouteObject[] = [
   {
@@ -31,6 +37,13 @@ const routes: RouteObject[] = [
         path: "/edit-static-content/:id/:type",
         element: <EditStaticContent />,
       },
+      { path: "/deposit-list", element: <DepositList /> },
+      { path: "/deposit-view", element: <DepositView /> },
+      { path: "/fee-structure", element: <FeeStructure /> },
+      { path: "/send-notification", element: <SendNotification /> },
+      { path: "/notification", element: <NotificationList /> },
+      { path: "/view-notification", element: <NotificationView /> },
+
     ],
   },
   { path: "/", element: <SignIn /> },

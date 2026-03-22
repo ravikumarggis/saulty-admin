@@ -7,7 +7,7 @@ import { ChevronDownIcon, GridIcon, HorizontaLDots } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import { AiTwotoneBank } from "react-icons/ai";
 import { LiaUsersCogSolid } from "react-icons/lia";
-import { BiSupport } from "react-icons/bi";
+import { BiCalculator, BiNotification, BiSupport } from "react-icons/bi";
 import { MdOutlineContentPaste } from "react-icons/md";
 import { GiTrophyCup } from "react-icons/gi";
 import { useProfile } from "../queries/auth";
@@ -102,6 +102,13 @@ const navItems: NavItem[] = [
   },
   {
     icon: <PiHandWithdrawBold />,
+    name: "Deposite Management",
+    path: "/deposit-list",
+    isRead: true,
+    isWrite: true,
+  },
+  {
+    icon: <PiHandWithdrawBold />,
     name: "Withdrawal Management",
     path: "/withdraw-inr",
     isRead: true,
@@ -121,7 +128,20 @@ const navItems: NavItem[] = [
     isRead: true,
     isWrite: true,
   },
-
+  {
+    icon: <BiCalculator />,
+    name: "Fee Management",
+    path: "/fee-structure",
+    isRead: true,
+    isWrite: true,
+  },
+  {
+    icon: <BiNotification />,
+    name: "Notification",
+    path: "/notification",
+    isRead: true,
+    isWrite: true,
+  },
   {
     icon: <BiWallet />,
     name: "Static Content",

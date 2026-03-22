@@ -280,6 +280,20 @@ const TableFilter: React.FC<TableFilterProps> = ({
           </div>
         </div>
       )}
+        {type == "NotificationList" && (
+        <div className="w-full ">
+          <div className="flex  justify-end items-end  ">
+            <Button
+              className=" py-3"
+              onClick={() => {
+                navigate("/send-notification");
+              }}
+            >
+              Send Notification
+            </Button>
+          </div>
+        </div>
+      )}
       <div className="w-full mb-4 p-0 grid grid-cols-8 2xl:grid-cols-12 gap-4"></div>
     </>
   );
