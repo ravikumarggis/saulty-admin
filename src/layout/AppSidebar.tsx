@@ -121,6 +121,14 @@ const navItems: NavItem[] = [
     isRead: true,
     isWrite: true,
   },
+
+  {
+    icon: <BiWallet />,
+    name: "Static Content",
+    path: "/static-content-mangment",
+    isRead: true,
+    isWrite: true,
+  },
 ];
 
 console.log(navItems, "navItemsnavItems");

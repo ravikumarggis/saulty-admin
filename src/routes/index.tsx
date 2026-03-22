@@ -9,6 +9,9 @@ import CategoryList from "../pages/CategoryManagement/CategoryList";
 import AddCategory from "../pages/CategoryManagement/AddCategory";
 import KycList from "../pages/KycManagement/KycList";
 import KycView from "../pages/KycManagement/ViewKyc";
+import ContentMangement from "../pages/SataticContentMangment/ContentMangement";
+import ViewStaticContent from "../pages/SataticContentMangment/ViewStaticContent";
+import EditStaticContent from "../pages/SataticContentMangment/EditStaticContent";
 
 const routes: RouteObject[] = [
   {
@@ -22,6 +25,12 @@ const routes: RouteObject[] = [
       { path: "/category-list", element: <CategoryList /> },
       { path: "/add-category", element: <AddCategory /> },
       { path: "/kyc-list", element: <KycList /> },
+      { path: "/static-content-mangment", element: <ContentMangement /> },
+      { path: "/view-static-content/:id", element: <ViewStaticContent /> },
+      {
+        path: "/edit-static-content/:id/:type",
+        element: <EditStaticContent />,
+      },
     ],
   },
   { path: "/", element: <SignIn /> },
