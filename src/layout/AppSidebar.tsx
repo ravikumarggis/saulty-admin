@@ -7,7 +7,7 @@ import { ChevronDownIcon, GridIcon, HorizontaLDots } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import { AiTwotoneBank } from "react-icons/ai";
 import { LiaUsersCogSolid } from "react-icons/lia";
-import { BiCalculator, BiNotification, BiSupport } from "react-icons/bi";
+import { BiCalculator, BiNotification, BiPhone, BiSupport } from "react-icons/bi";
 import { MdOutlineContentPaste } from "react-icons/md";
 import { GiTrophyCup } from "react-icons/gi";
 import { useProfile } from "../queries/auth";
@@ -125,6 +125,13 @@ const navItems: NavItem[] = [
     icon: <BiWallet />,
     name: "KYC Management",
     path: "/kyc-list",
+    isRead: true,
+    isWrite: true,
+  },
+  {
+    icon: <BiPhone />,
+    name: "Call History",
+    path: "/call-history",
     isRead: true,
     isWrite: true,
   },

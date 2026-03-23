@@ -18,6 +18,7 @@ import FeeStructure from "../pages/FeeStructure";
 import SendNotification from "../pages/Notification/SendNotification";
 import NotificationList from "../pages/Notification/NotificationList";
 import NotificationView from "../pages/Notification/NotificationView";
+import CallHistoryList from "../pages/CallHistory";
 
 const routes: RouteObject[] = [
   {
@@ -43,6 +44,7 @@ const routes: RouteObject[] = [
       { path: "/send-notification", element: <SendNotification /> },
       { path: "/notification", element: <NotificationList /> },
       { path: "/view-notification", element: <NotificationView /> },
+      { path: "/call-history", element: <CallHistoryList /> },
 
     ],
   },
