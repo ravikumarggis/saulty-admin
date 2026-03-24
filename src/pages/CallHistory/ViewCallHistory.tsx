@@ -7,9 +7,10 @@ import Button from "../../components/ui/button/Button";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useEffect, useMemo, useState } from "react";
 import CommonTable from "../../components/common/CommonTable";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import {
-    useCallHistoryList,
+  useCallHistoryList,
+  useCallHistoryView,
 } from "../../queries/call-history";
 import BackComponent from "../../components/backcomponent/BackComponent";
 import {
@@ -24,31 +25,35 @@ import CopyButton from "../../components/common/CopyButton";
 
 interface InrWithdrawListRowData {
   id: string;
-  user2: {
-    name: any;
-   
-  };
-  user1: {
-    name: any;
-  
-  };
-  totalCalls: any;
-  depositStatus: string;
-  lastCallTime: string;
-  updatedAt: string;
-  Action: any;
+
+  adminCommissionAmount: any;
+  buddyEarning: any;
+
+
+  durationSeconds: any;
+  totalAmount: any;
+  pricePerMinute: any;
+ 
 }
 
 const columnHelper = createColumnHelper<InrWithdrawListRowData>();
 
-const CallHistoryList = () => {
+const ViewCallHistory = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { callDetail } = location.state || {};
   const { setParam, searchParams, removeParam } = useSetSearchParam();
   const [filter, setFilter] = useState({ page: searchParams.get("page") });
   const debouncedFilter = useDebounce(filter, 1000);
   const [isDownloadCsv, setIsDownloadCsv] = useState(false);
-  const { data, isLoading } = useCallHistoryList();
 
+  console.log(debouncedFilter, "debouncedFilterdebouncedFilter");
+
+  const { data, isLoading } = useCallHistoryView({
+    user1: callDetail?.user1?._id,
+    user2: callDetail?.user2?._id,
+    page: debouncedFilter?.page,
+  });
   const {
     data: WithdrawCryptoInrCSV,
     isLoading: WithdrawCryptoInrCSVLoading,
@@ -82,41 +87,46 @@ const CallHistoryList = () => {
         return Pagination({ filter, table, row });
       },
     },
-    columnHelper.accessor("user1.name", {
-      header: "User",
-      cell: (info) => info.getValue() || "--",
-    }),
-    columnHelper.accessor("user2.name", {
-      header: "Buddy",
-      cell: (info) => info.getValue() || "--",
-    }),
-    columnHelper.accessor("totalCalls", {
-      header: "Total Calls",
-      cell: (info) => info.getValue() || "--",
-    }),
-    columnHelper.accessor("lastCallTime", {
-        header: "Last Call Time Date & Time",
-        cell: (info) => DateTimeFormates(info.getValue()),
+    columnHelper.accessor("adminCommissionAmount", {
+        header: "Admin Commission Amount",
+        cell: (info) => {
+          const value = info.getValue();
+          return `₹${Number(value ?? 0).toFixed(2)}`;
+        },
+      }),
+  
+    columnHelper.accessor("buddyEarning", {
+        header: "Buddy Earning",
+        cell: (info) => {
+          const value = info.getValue();
+          return `₹${Number(value ?? 0).toFixed(2)}`;
+        },
+      }),
+  
+    columnHelper.accessor("totalAmount", {
+        header: "Total Amount",
+        cell: (info) => {
+          const value = info.getValue();
+          return `₹${Number(value ?? 0).toFixed(2)}`;
+        },
+      }),
+  
+    columnHelper.accessor("durationSeconds", {
+        header: "Duration Seconds",
+        cell: (info) => {
+          const value = info.getValue();
+          return `${Number(value ?? 0)} Sec`;
+        },
+      }),
+    columnHelper.accessor("pricePerMinute", {
+        header: "Price per  Minute",
+        cell: (info) => {
+          const value = info.getValue();
+          return `₹${Number(value ?? 0).toFixed(2)}`;
+        },
       }),
   
 
-    {
-      header: "Action",
-      id: "view",
-      cell: ({ row }: { row: any }) => {
-        return (
-          <Button
-            onClick={() => {
-              navigate(`/view-call-history`, {
-                state: { callDetail: row?.original },
-              });
-            }}
-          >
-            View
-          </Button>
-        );
-      },
-    },
   ];
 
   const table = useReactTable({
@@ -145,10 +155,10 @@ const CallHistoryList = () => {
 
   return (
     <>
-      <BackComponent text="Call History" />
+      <BackComponent text="Details" />
       <CommonTable tableData={tableData} />
     </>
   );
 };
 
-export default CallHistoryList;
+export default ViewCallHistory;

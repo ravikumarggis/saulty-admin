@@ -19,6 +19,7 @@ import SendNotification from "../pages/Notification/SendNotification";
 import NotificationList from "../pages/Notification/NotificationList";
 import NotificationView from "../pages/Notification/NotificationView";
 import CallHistoryList from "../pages/CallHistory";
+import ViewCallHistory from "../pages/CallHistory/ViewCallHistory";
 
 const routes: RouteObject[] = [
   {
@@ -45,6 +46,7 @@ const routes: RouteObject[] = [
       { path: "/notification", element: <NotificationList /> },
       { path: "/view-notification", element: <NotificationView /> },
       { path: "/call-history", element: <CallHistoryList /> },
+      { path: "/view-call-history", element: <ViewCallHistory /> },
 
     ],
   },
