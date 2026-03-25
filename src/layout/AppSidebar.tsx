@@ -7,7 +7,7 @@ import { ChevronDownIcon, GridIcon, HorizontaLDots } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import { AiTwotoneBank } from "react-icons/ai";
 import { LiaUsersCogSolid } from "react-icons/lia";
-import { BiCalculator, BiNotification, BiPhone, BiSupport } from "react-icons/bi";
+import { BiCalculator, BiMessage, BiNotification, BiPhone, BiSupport } from "react-icons/bi";
 import { MdOutlineContentPaste } from "react-icons/md";
 import { GiTrophyCup } from "react-icons/gi";
 import { useProfile } from "../queries/auth";
@@ -132,6 +132,13 @@ const navItems: NavItem[] = [
     icon: <BiPhone />,
     name: "Call History",
     path: "/call-history",
+    isRead: true,
+    isWrite: true,
+  },
+  {
+    icon: <BiMessage />,
+    name: "Chat History",
+    path: "/message-history",
     isRead: true,
     isWrite: true,
   },
