@@ -32,7 +32,7 @@ export const fetchCallHistoryList = async () => {
   export interface CallHistoryParams {
     user1?: string;
     user2?: string;
-    page?: any;
+  
   }
   
   export interface CallHistoryItem {
@@ -56,12 +56,12 @@ export const fetchCallHistoryList = async () => {
   ): Promise<CallHistorySuccessResponse | CallHistoryErrorResponse> => {
     try {
       const response = await api({
-        url: `/admin/adminCallView`,
+        url: `/admin/adminChatView`,
         method: "GET",
         params: {
           user1: params.user1,
           user2: params.user2,
-          page: params.page,
+         
         },
       });
   
@@ -75,9 +75,9 @@ export const fetchCallHistoryList = async () => {
       return error?.response?.data;
     }
   };
-  export const useCallHistoryView = (params: CallHistoryParams) => {
+  export const useMessageHistoryView = (params: CallHistoryParams) => {
     return useQuery<CallHistoryItem[] | null>({
-      queryKey: ["adminCallView", params],
+      queryKey: ["adminChatView", params],
       queryFn: async () => {
         const res = await fetchCallHistoryView(params);
   

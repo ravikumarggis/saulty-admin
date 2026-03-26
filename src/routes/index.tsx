@@ -21,7 +21,7 @@ import NotificationView from "../pages/Notification/NotificationView";
 import CallHistoryList from "../pages/CallHistory";
 import ViewCallHistory from "../pages/CallHistory/ViewCallHistory";
 import MessageHistoryList from "../pages/MessageHistory";
-import ViewMessageHistory from "../pages/MessageHistory/ViewCallHistory";
+import ViewMessageHistory from "../pages/MessageHistory/ViewMessageHistory";
 
 const routes: RouteObject[] = [
   {
