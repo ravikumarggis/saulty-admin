@@ -119,7 +119,7 @@ const MessageHistoryList = () => {
             </Button>
             <Button
               onClick={() => {
-                navigate(`/view-message-call-history`, {
+                navigate(`/view-call-message-history`, {
                   state: { callDetail: row?.original },
                 });
               }}
