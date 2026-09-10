@@ -22,6 +22,7 @@ import {
 import { useSetSearchParam } from "../../hooks/useSetSearchParam";
 import { useWithdrawCryptoInrCSV } from "../../queries/downloadCSV";
 import CopyButton from "../../components/common/CopyButton";
+import { useCallMessageHistoryView } from "../../queries/message-history";
 
 interface InrWithdrawListRowData {
   id: string;
@@ -38,7 +39,7 @@ interface InrWithdrawListRowData {
 
 const columnHelper = createColumnHelper<InrWithdrawListRowData>();
 
-const ViewCallHistory = () => {
+const ViewMessageCallHistory = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { callDetail } = location.state || {};
@@ -49,7 +50,7 @@ const ViewCallHistory = () => {
 
   console.log(debouncedFilter, "debouncedFilterdebouncedFilter");
 
-  const { data, isLoading } = useCallHistoryView({
+  const { data, isLoading } = useCallMessageHistoryView({
     user1: callDetail?.user1?._id,
     user2: callDetail?.user2?._id,
     page: debouncedFilter?.page,
@@ -161,4 +162,4 @@ const ViewCallHistory = () => {
   );
 };
 
-export default ViewCallHistory;
+export default ViewMessageCallHistory;

@@ -8,9 +8,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { useEffect, useMemo, useState } from "react";
 import CommonTable from "../../components/common/CommonTable";
 import { useNavigate } from "react-router";
-import {
-    useCallHistoryList,
-} from "../../queries/call-history";
+import { useCallHistoryList } from "../../queries/call-history";
 import BackComponent from "../../components/backcomponent/BackComponent";
 import {
   DateTimeFormates,
@@ -28,12 +26,10 @@ interface InrWithdrawListRowData {
   user2: {
     name: any;
     userType: any;
-   
   };
   user1: {
     name: any;
     userType: any;
-  
   };
   lastMessageTime: any;
 
@@ -84,9 +80,8 @@ const MessageHistoryList = () => {
       },
     },
     columnHelper.accessor(
-      (row) => row.user1?.userType == "User"
-        ? row.user1?.name
-        : row.user2?.name,
+      (row) =>
+        row.user1?.userType == "User" ? row.user1?.name : row.user2?.name,
       {
         id: "userName",
         header: "User",
@@ -95,9 +90,7 @@ const MessageHistoryList = () => {
     ),
     columnHelper.accessor(
       (row) =>
-        row.user2?.userType === "Buddy"
-          ? row?.user2?.name
-          : row?.user1?.name,
+        row.user2?.userType === "Buddy" ? row?.user2?.name : row?.user1?.name,
       {
         id: "buddyName", // required when using function
         header: "Buddy",
@@ -114,15 +107,26 @@ const MessageHistoryList = () => {
       id: "view",
       cell: ({ row }: { row: any }) => {
         return (
-          <Button
-            onClick={() => {
-              navigate(`/view-message-history`, {
-                state: { callDetail: row?.original },
-              });
-            }}
-          >
-            View
-          </Button>
+          <div className="space-x-2">
+            <Button
+              onClick={() => {
+                navigate(`/view-message-history`, {
+                  state: { callDetail: row?.original },
+                });
+              }}
+            >
+              View
+            </Button>
+            <Button
+              onClick={() => {
+                navigate(`/view-message-call-history`, {
+                  state: { callDetail: row?.original },
+                });
+              }}
+            >
+              Earning
+            </Button>
+          </div>
         );
       },
     },
@@ -154,7 +158,7 @@ const MessageHistoryList = () => {
 
   return (
     <>
-      <BackComponent text="Call History" />
+      <BackComponent text="Chat History" />
       <CommonTable tableData={tableData} />
     </>
   );

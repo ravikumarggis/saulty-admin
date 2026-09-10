@@ -19,9 +19,10 @@ import SendNotification from "../pages/Notification/SendNotification";
 import NotificationList from "../pages/Notification/NotificationList";
 import NotificationView from "../pages/Notification/NotificationView";
 import CallHistoryList from "../pages/CallHistory";
-import ViewCallHistory from "../pages/CallHistory/ViewCallHistory";
+import ViewCallHistory from "../pages/CallHistory/index";
 import MessageHistoryList from "../pages/MessageHistory";
 import ViewMessageHistory from "../pages/MessageHistory/ViewMessageHistory";
+import ViewMessageCallHistory from "../pages/MessageHistory/ViewCallHistory";
 
 const routes: RouteObject[] = [
   {
@@ -51,6 +52,7 @@ const routes: RouteObject[] = [
       { path: "/view-call-history", element: <ViewCallHistory /> },
       { path: "/message-history", element: <MessageHistoryList /> },
       { path: "/view-message-history", element: <ViewMessageHistory /> },
+      { path: "/view-call-message-history", element: <ViewMessageCallHistory /> },
 
     ],
   },

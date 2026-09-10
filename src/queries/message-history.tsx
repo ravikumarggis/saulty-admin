@@ -90,3 +90,53 @@ export const fetchCallHistoryList = async () => {
       enabled: !!params.user1 && !!params.user2,
     });
   };
+
+  export interface CallHistoryParams {
+    user1?: string;
+    user2?: string;
+    page?: any;
+  }
+    export interface CallHistoryErrorResponse {
+      responseCode: number;
+      responseMessage: string;
+    }
+    
+    export const fetchCallMessageHistoryView = async (
+      params: CallHistoryParams
+    ): Promise<CallHistorySuccessResponse | CallHistoryErrorResponse> => {
+      try {
+        const response = await api({
+          url: `/admin/adminChatViewEarning`,
+          method: "GET",
+          params: {
+            user1: params.user1,
+            user2: params.user2,
+            page: params.page,
+          },
+        });
+    
+        if (response?.data?.responseCode === 200) {
+          return response.data;
+        }
+    
+        return response.data;
+      } catch (error: any) {
+        console.error("API error:", error);
+        return error?.response?.data;
+      }
+    };
+    export const useCallMessageHistoryView = (params: CallHistoryParams) => {
+      return useQuery<CallHistoryItem[] | null>({
+        queryKey: ["adminCallView", params],
+        queryFn: async () => {
+          const res = await fetchCallMessageHistoryView(params);
+    
+          if (res?.responseCode === 200) {
+            return res?.result;
+          } else {
+            return null;
+          }
+        },
+        enabled: !!params.user1 && !!params.user2,
+      });
+    };
