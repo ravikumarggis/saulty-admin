@@ -47,7 +47,7 @@ const CallHistoryList = () => {
   const [filter, setFilter] = useState({ page: searchParams.get("page") });
   const debouncedFilter = useDebounce(filter, 1000);
   const [isDownloadCsv, setIsDownloadCsv] = useState(false);
-  const { data, isLoading } = useCallHistoryList();
+  const { data, isLoading } = useCallHistoryList(debouncedFilter);
 
   const {
     data: WithdrawCryptoInrCSV,
@@ -130,7 +130,7 @@ const CallHistoryList = () => {
     setFilter,
     isLoading,
     table,
-    type: "deposite",
+    type: "call",
     totalPage: formateData?.pages,
     filterData: {
       WithCryptoInrCSVData: formateData?.WithCryptoInrCSVData,

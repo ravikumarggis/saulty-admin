@@ -1,11 +1,46 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../services/apiServices";
+import { convertDataFormateForServer } from "../utils";
 
-export const fetchCallHistoryList = async () => {
+type FilterType = {
+  search?: string;
+  filter?: string;
+  fromDate?: string;
+  toDate?: string;
+  page?: string | null;
+  symbol?: string;
+  isNewUser?: string;
+  isTestUser?: string;
+};
+
+
+export const fetchCallHistoryList = async (filter: FilterType ) => {
     try {
       const response = await api({
         url: `/admin/adminCallList`,
         method: "GET",
+          params: {
+                     
+                    
+                       search: filter?.search || undefined,
+                       withdrawStatus:
+                         filter?.filter === "Pending"
+                           ? "PENDING"
+                           : filter?.filter === "Verified"
+                             ? "VERIFIED" 
+                             : filter?.filter === "Rejected"
+                             ? "REJECTED" 
+                             :  filter?.filter,
+                       // depositStatus: filter?.filter || undefined,
+                       fromDate: filter?.fromDate
+                         ? convertDataFormateForServer(filter?.fromDate)
+                         : undefined,
+                       toDate: filter?.toDate
+                         ? convertDataFormateForServer(filter?.toDate)
+                         : undefined,
+                       limit: 10,
+                       page: filter?.page || 1,
+                     },
        
       });
       return response;
@@ -14,10 +49,10 @@ export const fetchCallHistoryList = async () => {
       return error?.response;
     }
   };
-  export const useCallHistoryList = ( ) => {
+  export const useCallHistoryList = ( filter: FilterType ) => {
     return useQuery({
-      queryKey: ["adminCallList"],
-      queryFn: () => fetchCallHistoryList(),
+      queryKey: ["adminCallList",filter],
+      queryFn: () => fetchCallHistoryList(filter),
       select(data) {
         if (data?.data?.responseCode === 200) {
           return data?.data?.result;
